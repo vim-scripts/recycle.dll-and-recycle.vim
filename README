@@ -1,0 +1,26 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1303
+
+The idea is stolen from Aditor (http://aditor.swrus.com/). When backuping, the file is dropped to Recycle Bin instead of a temporary directory. As multiple files from one place may be deleted and will be stored in the bin, the bin may serve as a kind of versioning system.
+
+Call the DLL with
+    libcallnr('recycle', 'Recycle', 'd:\path\file.ext')
+
+Returns 1 on ok, 0 on error, -1 on user cancel (although the latter has little chance to happen, as the DLL deletes the file silenly).
+
+There was a version that just deleted the file specified. Nothing wrong with it, but Vim said "New" when writing to the file, which is not true. So, for now, the DLL copies the file, adding the ~ suffix to it, and then deletes the copy. It overwrites any file~ that may occur to exist. And when restored from the bin, the original file is not overwritten, but a copy with ~ appears in the same directory.
+
+A .vim plugin is there, too. It adds an autocommand which backups the file to the Recycle Bin on each write, and disables Vim's own backup procedure. If the recycle fails, normal backup is enabled.
+
+It does not honor the 'patchmode' option for now, does not load at all when it is set.
+
+Planned:
+- honor 'patchmode'.
+- use the 'backupext' option instead of ~. The same with 'patchmode'.
+
+Decide:
+- copy the file with "~" or 'backupext' added (like now) or just delete the file (like it was)?
+- add an autocommand on FileWritePre?
+
+ZIP archive is 2.4 Kb.
+The DLL is 2.5 Kb.
+Source inside.
